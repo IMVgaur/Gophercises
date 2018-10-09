@@ -1,37 +1,57 @@
 package cipher
 
 import (
+	"bytes"
+	"crypto/aes"
+	"errors"
+	"os"
+	"path/filepath"
 	"testing"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"github.ibm.com/CloudBroker/dash_utils/dashtest"
 )
 
+func TestEncryptWriter(t *testing.T) {
+	var w bytes.Buffer
+	key := "abc"
+	_, err := EncryptWriter(key, &w)
+	if err != nil {
+		t.Errorf("Expected no err but got err %v", err)
+	}
+}
+
+func TestDecryptReaderNegative(t *testing.T) {
+	home, _ := homedir.Dir()
+	fp := filepath.Join(home, "secrettest.txt")
+
+	f, _ := os.Open(fp)
+	defer f.Close()
+	_, err := DecryptReader("abc", f)
+	if err == nil {
+		t.Error("Expected error but got no error")
+	}
+
+}
+func TestDecryptReader(t *testing.T) {
+	home, _ := homedir.Dir()
+	fp := filepath.Join(home, "secretTest.txt")
+
+	f, _ := os.Open(fp)
+	defer f.Close()
+	_, err := DecryptReader("abc", f)
+	if err != nil {
+		t.Errorf("Expected NO error but got following error : %v ", err)
+	}
+}
+
+func TestCheckIV(t *testing.T) {
+	iv := make([]byte, aes.BlockSize)
+	err := checkInitVector(10, iv, errors.New("test"))
+	if err == nil {
+		t.Error("Expected error but got no error")
+	}
+}
 func TestMain(m *testing.M) {
 	dashtest.ControlCoverage(m)
-}
-
-func TestEncrypt(t *testing.T) {
-	plainText := "IMVGaur"
-	key := "aBC"
-	_, err := Encrypt(key, plainText)
-	if err != nil {
-		t.Errorf("Error : %v", err)
-	}
-}
-
-func TestDecrypt(t *testing.T) {
-	cipherHex := "6749571c3e4c16917a25f4502a444563564044f3389917"
-	key := "aBC"
-	_, err := Decrypt(key, cipherHex)
-	if err != nil {
-		t.Errorf("Error  : %v", err)
-	}
-}
-
-func TestNewCipherBlock(t *testing.T) {
-	key := "aBC"
-	_, err := newCipherBlock(key)
-	if err != nil {
-		t.Errorf("Error : %v", err)
-	}
 }
