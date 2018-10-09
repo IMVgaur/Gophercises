@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Gophercises/Exercise_7/db"
+	"github.com/IMVgaur/Gophercises/Exercise_7/db"
 	"github.com/spf13/cobra"
 )
 

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Gophercises/Exercise_7/db"
+	"github.com/IMVgaur/Gophercises/Exercise_7/db"
 	"github.com/mitchellh/go-homedir"
 	"github.com/stretchr/testify/assert"
 )
