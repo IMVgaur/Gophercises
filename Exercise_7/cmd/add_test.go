@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -10,28 +11,34 @@ import (
 	"github.com/Gophercises/Exercise_7/db"
 	"github.com/mitchellh/go-homedir"
 	"github.com/stretchr/testify/assert"
+	"github.ibm.com/CloudBroker/dash_utils/dashtest"
 )
+
+func TestMain(m *testing.M) {
+	dashtest.ControlCoverage(m)
+}
 
 func TestAddCmd(t *testing.T) {
 	home, _ := homedir.Dir()
-	dbPath := filepath.Join(home, "tasks.db")
-	dbc, _ := db.Init(dbPath)
-	file, _ := os.OpenFile("testing.txt", os.O_CREATE|os.O_RDWR, 0600)
-	OldStdOut := os.Stdout
+	DbPath := filepath.Join(home, "tasks.db")
+	dbc, _ := db.Init(DbPath)
+	file, _ := os.OpenFile("testing.txt", os.O_CREATE|os.O_RDWR, 0666)
+	oldStdout := os.Stdout
 	os.Stdout = file
-	a := []string{"complete exercise"}
+	a := []string{"Complete Exercise"}
 	addCmd.Run(addCmd, a)
 	file.Seek(0, 0)
 	content, err := ioutil.ReadAll(file)
 	if err != nil {
-		t.Error("Error occured while testing ", err)
+		t.Error("error occured while test case : ", err)
 	}
 	output := string(content)
-	val := strings.Contains(output, "added")
-	assert.Equalf(t, true, val, "They should be equal")
+	val := strings.Contains(output, "Added")
+	assert.Equalf(t, true, val, "they should be equal")
 	file.Truncate(0)
 	file.Seek(0, 0)
-	os.Stdout = OldStdOut
+	os.Stdout = oldStdout
+	fmt.Println(string(content))
 	file.Close()
 	dbc.Close()
 }

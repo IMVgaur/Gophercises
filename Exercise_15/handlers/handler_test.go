@@ -5,12 +5,30 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.ibm.com/CloudBroker/dash_utils/dashtest"
 )
 
-func TestPanicDemo(t *testing.T) {
-	req, err := http.NewRequest("GET", "localhost:3000", nil)
+func TestMain(m *testing.M) {
+	dashtest.ControlCoverage(m)
+}
+func TestWelcome(t *testing.T) {
+	req, err := http.NewRequest("GET", "localhost:8888", nil)
 	if err != nil {
-		t.Error("Cound not create new Request ", err)
+		t.Fatalf("could not create request: %v", err)
+	}
+	rec := httptest.NewRecorder()
+	welcome(rec, req)
+	res := rec.Result()
+	if res.StatusCode != http.StatusOK {
+		t.Errorf("Expected Status OK, recieved status %s", string(res.StatusCode))
+	}
+}
+
+func TestPanicDemo(t *testing.T) {
+	req, err := http.NewRequest("GET", "localhost:8888/panic", nil)
+	if err != nil {
+		t.Fatalf("could not create request: %v", err)
 	}
 	rec := httptest.NewRecorder()
 	defer func() {
@@ -19,103 +37,75 @@ func TestPanicDemo(t *testing.T) {
 	}()
 	PanicDemo(rec, req)
 	res := rec.Result()
-	if res.StatusCode != http.StatusOK {
-		t.Errorf("Error occured, expected status OK but recieved %s ", string(res.StatusCode))
+	if res.StatusCode != http.StatusInternalServerError {
+		t.Errorf("Expected Status StatusInternalServerError, recieved status %s", string(res.StatusCode))
 	}
 }
 
 func TestSourceCodeNavigator(t *testing.T) {
-	testSuits := []struct {
-		testName string
-		path     string
-		status   int
-	}{
-		{
-			testName: "Test1",
-			path:     "line=aws&path=/usr/local/go/src/runtime/debug/stack.go",
-			status:   500,
-		},
-		{
-			testName: "Test2",
-			path:     "line=aw17&path=/home/gslab/go/src/github.com/Gophercises/Exercise_15/middleware/MwRecovery.go",
-			status:   500,
-		},
-		{
-			testName: "Test3",
-			path:     "line=65&path=%2Fhome%2Fgslab%2Fgo%2Fsrc%2Fgithub.com%2FGophercises%2FExercise_15%2Fhandlers%2Fhandler.go",
-			status:   200,
-		},
-	}
 
-	for index := 0; index < len(testSuits); index++ {
-		req, err := http.NewRequest("GET", "localhost:3000/debug/?"+testSuits[index].path, nil)
-		if err != nil {
-			t.Error("Could not create new Request ", err)
-		}
-		rec := httptest.NewRecorder()
-		SourceCodeNavigator(rec, req)
-		res := rec.Result()
-		if res.StatusCode != testSuits[index].status {
-			t.Errorf("Expected Status OK but recieved :%v ", res.StatusCode)
-		}
-	}
-}
-
-func TestWelcome(t *testing.T) {
-	req, err := http.NewRequest("GET", "localhost:3000", nil)
-	if err != nil {
-		t.Errorf("Error occured while creating new request %v", err)
-	}
-	rec := httptest.NewRecorder()
-	Welcome(rec, req)
-	res := rec.Result()
-	if res.StatusCode != http.StatusOK {
-		t.Errorf("Expected status ok but got %v ", res.StatusCode)
-	}
-}
-
-func TestHandler(t *testing.T) {
-	server := httptest.NewServer(Handler())
-	defer server.Close()
-	testSuits := []struct {
+	testSuit := []struct {
 		testName string
 		url      string
 		status   int
 	}{
 		{
-			testName: "Test1",
-			url:      "/debug/?line=65&path=%2Fhome%2Fgslab%2Fgo%2Fsrc%2Fgithub.com%2FGophercises%2FExercise_15%2Fhandlers%2Fhandler.go",
-			status:   500,
+			testName: "test1",
+			url:      "line=24&path=/usr/local/go/src/runtime/debug/stack.go",
+			status:   200,
+		}, {
+			testName: "test2",
+			url:      "line=ewr&path=/usr/local/go/src/runtime/debug/stack.go",
+			status:   200,
 		},
 		{
-			testName: "Test2",
-			url:      "/debug/?line=aws&path=%2Fhome%2Fgslab%2Fgo%2Fsrc%2Fgithub.com%2FGophercises%2FExercise_15%2Fhandlers%2Fhandler.go",
+			testName: "test3",
+			url:      "line=24&path=/usr/local/go/src/debug/stack.go",
 			status:   500,
 		},
+	}
+	for i := 0; i < len(testSuit); i++ {
+		req, err := http.NewRequest("GET", "http://localhost:8888/debug/?"+testSuit[i].url, nil)
+		if err != nil {
+			t.Fatalf("could not create request: %v", err)
+		}
+		rec := httptest.NewRecorder()
+		sourceCodeNavigator(rec, req)
+		res := rec.Result()
+		if res.StatusCode != testSuit[i].status {
+			t.Errorf("Test case Number: %v Expected %v , Actual status %v", testSuit[i].testName, testSuit[i].status, res.StatusCode)
+		}
+	}
+
+}
+
+func TestHandler(t *testing.T) {
+	srv := httptest.NewServer(Handler())
+	defer srv.Close()
+	testSuit := []struct {
+		testName string
+		url      string
+		status   int
+	}{
 		{
-			testName: "Test3",
+			testName: "test1",
 			url:      "/",
 			status:   200,
 		},
 		{
-			testName: "Test4",
-			url:      "/debug/",
-			status:   500,
-		},
-		{
-			testName: "Test2",
-			url:      "/debug/?line=aws&path=%2%2FGophercises%2FExercise_15%2Fhandlers%2Fhandler.go",
+			testName: "test2",
+			url:      "/debug",
 			status:   500,
 		},
 	}
-	for index := 0; index < len(testSuits); index++ {
-		res, err := http.Get(fmt.Sprintf(server.URL + testSuits[index].url))
+	for i := 0; i < len(testSuit); i++ {
+		res, err := http.Get(fmt.Sprintf(srv.URL + "/" + testSuit[i].url))
 		if err != nil {
-			t.Error("Test case falied here due to GET method..", err)
+			t.Fatalf("could not send GET request: %v", err)
 		}
 		defer res.Body.Close()
-		if res.StatusCode != testSuits[index].status {
-			t.Errorf("Unexpected Status code Actual :%v  and expected : %v", res.StatusCode, http.StatusOK)
+		if res.StatusCode != testSuit[i].status {
+			t.Errorf("test case name : %v expected %v; got %v", testSuit[i].testName, testSuit[i].status, res.Status)
 		}
 	}
 }

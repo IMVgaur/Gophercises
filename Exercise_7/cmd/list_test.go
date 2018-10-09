@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,26 +13,54 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestListCmd(t *testing.T) {
+func TestListCommand(t *testing.T) {
 	home, _ := homedir.Dir()
-	dbPath := filepath.Join(home, "tasks.db")
-	dbc, _ := db.Init(dbPath)
+	DbPath := filepath.Join(home, "tasks.db")
+	dbc, _ := db.Init(DbPath)
 	file, _ := os.OpenFile("testing.txt", os.O_CREATE|os.O_RDWR, 0666)
-	OldStdout := os.Stdout
+	oldStdout := os.Stdout
 	os.Stdout = file
 	a := []string{""}
 	listCmd.Run(listCmd, a)
 	file.Seek(0, 0)
 	content, err := ioutil.ReadAll(file)
 	if err != nil {
-		t.Error("Error occured while testing..")
+		t.Error("error occured while test case : ", err)
 	}
 	output := string(content)
-	val := strings.Contains(output, "You have following tasks")
-	assert.Equalf(t, true, val, "They should be equal")
+	val := strings.Contains(output, "You have the following tasks:")
+	assert.Equalf(t, true, val, "they should be equal")
 	file.Truncate(0)
 	file.Seek(0, 0)
-	os.Stdout = OldStdout
+	os.Stdout = oldStdout
+	fmt.Println(string(content))
 	file.Close()
 	dbc.Close()
+
+}
+
+func TestNListCommand(t *testing.T) {
+	home, _ := homedir.Dir()
+	DbPath := filepath.Join(home, "tasks.db")
+	dbc, _ := db.Init(DbPath)
+	file, _ := os.OpenFile("testing.txt", os.O_CREATE|os.O_RDWR, 0666)
+	oldStdout := os.Stdout
+	os.Stdout = file
+	dbc.Close()
+	a := []string{""}
+	listCmd.Run(listCmd, a)
+	file.Seek(0, 0)
+	content, err := ioutil.ReadAll(file)
+	if err != nil {
+		t.Error("error occured while test case : ", err)
+	}
+	output := string(content)
+	val := strings.Contains(output, "error occured in list cmd")
+	assert.Equalf(t, true, val, "they should be equal")
+	file.Truncate(0)
+	file.Seek(0, 0)
+	os.Stdout = oldStdout
+	fmt.Println(string(content))
+	file.Close()
+
 }

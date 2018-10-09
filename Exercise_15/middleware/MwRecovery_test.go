@@ -8,7 +8,12 @@ import (
 	"testing"
 
 	handlers "github.com/Gophercises/Exercise_15/handlers"
+	"github.ibm.com/CloudBroker/dash_utils/dashtest"
 )
+
+func TestMain(m *testing.M) {
+	dashtest.ControlCoverage(m)
+}
 
 func TestRecoveryMID(t *testing.T) {
 	handler := http.HandlerFunc(handlers.PanicDemo)

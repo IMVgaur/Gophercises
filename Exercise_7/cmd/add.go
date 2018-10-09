@@ -10,14 +10,15 @@ import (
 
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "Add your task to the List.",
+	Short: "Adds a task to your task list.",
 	Run: func(cmd *cobra.Command, args []string) {
 		task := strings.Join(args, " ")
-		_, err := db.AddTask(task)
+		err := db.AddTask(task)
+		msg := "Error occurred in add cmd"
 		if err == nil {
-			fmt.Printf("Task \"%s\" has been added to the list.\n", task)
+			msg = fmt.Sprintf("Added \"%s\" to your task list.\n", task)
 		}
-		fmt.Printf("Something went wrong : %v", err)
+		fmt.Printf(msg)
 	},
 }
 
