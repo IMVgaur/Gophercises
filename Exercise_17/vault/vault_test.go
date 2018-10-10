@@ -57,7 +57,7 @@ func TestGetNegative(t *testing.T) {
 
 func TestLoad(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "testload.txt")
+	fp := filepath.Join(home, "secretTest.txt")
 	v := File("abc", fp)
 	err := v.load()
 	if err != nil {
