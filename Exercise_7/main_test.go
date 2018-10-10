@@ -7,5 +7,6 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	main()
 	dashtest.ControlCoverage(m)
 }

@@ -27,7 +27,7 @@ func TestInit(t *testing.T) {
 }
 
 func TestInitNegative(t *testing.T) {
-	_, err := Init("/home/gslab/task.db")
+	_, err := Init("/home/gslab123/task.db")
 	if err == nil {
 		t.Errorf("Expected result error, But got NO Error")
 	}

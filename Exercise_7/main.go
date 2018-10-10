@@ -10,6 +10,10 @@ import (
 )
 
 func main() {
+	Initializer()
+}
+
+func Initializer() {
 	home, _ := homedir.Dir()
 	dbPath := filepath.Join(home, "tasks.db")
 	_, err := db.Init(dbPath)
