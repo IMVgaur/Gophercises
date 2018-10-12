@@ -10,8 +10,9 @@ import (
 	"io"
 )
 
+//EncryptWriter ...
 //EncryptWriter takes key, io.writer and writes the encoded value on *cipher.StreamWriter
-//returns error if any
+//returns error
 func EncryptWriter(key string, w io.Writer) (*cipher.StreamWriter, error) {
 	iv := make([]byte, aes.BlockSize)
 	io.ReadFull(rand.Reader, iv)
@@ -30,6 +31,7 @@ func checkInitVector(n int, iv []byte, err error) error {
 	return nil
 }
 
+//DecryptReader ...
 //Func DecryptReader decrypts the ecrypted data
 //input : key string - based on which encryption was done
 //return reader which holds the decrypted data and error

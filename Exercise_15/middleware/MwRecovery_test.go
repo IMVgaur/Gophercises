@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	handlers "github.com/Gophercises/Exercise_15/handlers"
+	handlers "github.com/IMVgaur/Gophercises/Exercise_15/handlers"
 	"github.ibm.com/CloudBroker/dash_utils/dashtest"
 )
 

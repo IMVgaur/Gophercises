@@ -23,7 +23,8 @@ func Handler() http.Handler {
 	return mux
 }
 
-//This sourceCodeNavigator function is used to debug our errors.
+//This sourceCodeNavigator function rendera the link to the program where error
+//was occured, with line number
 func sourceCodeNavigator(w http.ResponseWriter, r *http.Request) {
 	path := r.FormValue("path")
 	lineStr := r.FormValue("line")
@@ -51,7 +52,7 @@ func sourceCodeNavigator(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//This welcome function is to display the welcome message.
+//welcome function displays the welcome message
 func welcome(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "<h1>Welcome!!!</h1>")
 	w.WriteHeader(http.StatusOK)

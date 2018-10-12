@@ -14,6 +14,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":3000", PanicHandler(server)))
 }
 
+//PanicHandler ...
 func PanicHandler(h http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {

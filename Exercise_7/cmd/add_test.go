@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Gophercises/Exercise_7/db"
+	"github.com/IMVgaur/Gophercises/Exercise_7/db"
 	"github.com/mitchellh/go-homedir"
 	"github.com/stretchr/testify/assert"
 	"github.ibm.com/CloudBroker/dash_utils/dashtest"
@@ -30,11 +30,11 @@ func TestAddCmd(t *testing.T) {
 	file.Seek(0, 0)
 	content, err := ioutil.ReadAll(file)
 	if err != nil {
-		t.Error("error occured while test case : ", err)
+		t.Error("Error while reading contents : ", err)
 	}
 	output := string(content)
 	val := strings.Contains(output, "Added")
-	assert.Equalf(t, true, val, "they should be equal")
+	assert.Equalf(t, true, val, "They should be equal")
 	file.Truncate(0)
 	file.Seek(0, 0)
 	os.Stdout = oldStdout

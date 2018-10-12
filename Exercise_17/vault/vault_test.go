@@ -14,7 +14,7 @@ func TestMain(m *testing.M) {
 }
 func TestSet(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "secretTest.txt")
+	fp := filepath.Join(home, "secret.txt")
 	v := File("abc", fp)
 	err := v.Set("xyz", "testing")
 	if err != nil {
@@ -33,7 +33,7 @@ func TestSetNegative(t *testing.T) {
 
 func TestGet(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "secretTest.txt")
+	fp := filepath.Join(home, "secret.txt")
 	v := File("abc", fp)
 	_, err := v.Get("xyz")
 	if err != nil {
@@ -42,7 +42,7 @@ func TestGet(t *testing.T) {
 }
 func TestGetNegative(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "secretTest.txt")
+	fp := filepath.Join(home, "secret.txt")
 	v := File("abc", fp)
 	_, err := v.Get("x")
 	if err == nil {
@@ -57,7 +57,7 @@ func TestGetNegative(t *testing.T) {
 
 func TestLoad(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "secretTest.txt")
+	fp := filepath.Join(home, "secret.txt")
 	v := File("abc", fp)
 	err := v.load()
 	if err != nil {
@@ -68,7 +68,7 @@ func TestLoad(t *testing.T) {
 
 func TestLoadNegative(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "secretTest.txt")
+	fp := filepath.Join(home, "secret.txt")
 	v := File("", fp)
 	err := v.load()
 	if err == nil {

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Gophercises/Exercise_7/db"
+	"github.com/IMVgaur/Gophercises/Exercise_7/db"
 	"github.com/mitchellh/go-homedir"
 	"github.com/stretchr/testify/assert"
 )
@@ -25,7 +25,7 @@ func TestListCommand(t *testing.T) {
 	file.Seek(0, 0)
 	content, err := ioutil.ReadAll(file)
 	if err != nil {
-		t.Error("error occured while test case : ", err)
+		t.Error("Error while reading data from file : ", err)
 	}
 	output := string(content)
 	val := strings.Contains(output, "You have the following tasks:")

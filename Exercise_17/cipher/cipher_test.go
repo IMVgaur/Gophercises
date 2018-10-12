@@ -35,7 +35,7 @@ func TestDecryptReaderNegative(t *testing.T) {
 }
 func TestDecryptReader(t *testing.T) {
 	home, _ := homedir.Dir()
-	fp := filepath.Join(home, "secretTest.txt")
+	fp := filepath.Join(home, "secret.txt")
 
 	f, _ := os.Open(fp)
 	defer f.Close()

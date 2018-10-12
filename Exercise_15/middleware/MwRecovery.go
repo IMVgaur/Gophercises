@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+//RecoveryMid ...
+//Recovery function in case panic occures in the program while execution
 func RecoveryMid(app http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
@@ -24,6 +26,10 @@ func RecoveryMid(app http.Handler) http.HandlerFunc {
 	}
 }
 
+//ErrLinks ...
+//function shows the error occured on the page
+//input : string containg stack information
+//return : formatted string
 func ErrLinks(stack string) string {
 	lines := strings.Split(stack, "\n")
 	for index, line := range lines {

@@ -10,6 +10,7 @@ import (
 	"github.com/Gophercises/Exercise_17/cipher"
 )
 
+//Vault ...
 //Represents bunch of required data structure
 type Vault struct {
 	encodingKey string
@@ -18,6 +19,7 @@ type Vault struct {
 	keyValues   map[string]string
 }
 
+//File ...
 //File function Initialize task struct
 //input : Encoding key for encryption, filepath for file io
 //return : Initialized Vault struct
@@ -28,6 +30,7 @@ func File(encodingKey, filePath string) *Vault {
 	}
 }
 
+//Set ...
 //Set function sets encrypted data into the file
 //input : key string - used for encrypting password
 // return : error
@@ -42,6 +45,7 @@ func (v *Vault) Set(key, value string) error {
 	return v.save()
 }
 
+//Get ...
 //Get method gets the key and value in plain text format from secret file
 func (v *Vault) Get(key string) (string, error) {
 	v.mutex.Lock()

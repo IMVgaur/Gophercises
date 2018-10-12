@@ -16,6 +16,7 @@ var setCmd = &cobra.Command{
 		err := v.Set(key, value)
 		if err != nil {
 			fmt.Printf("Error occured in Set : %v", err)
+			return
 		}
 		fmt.Println("Key and values has been Added successfully...!")
 	},

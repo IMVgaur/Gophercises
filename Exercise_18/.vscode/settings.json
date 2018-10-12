@@ -1,0 +1,6 @@
+{
+    "editor.find.autoFindInSelection": false,
+    "editor.formatOnPaste": true,
+    "editor.suggestOnTriggerCharacters": true,
+    "files.autoSave": "afterDelay"
+}
