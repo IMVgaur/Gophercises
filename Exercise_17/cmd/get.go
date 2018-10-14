@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Gophercises/Exercise_17/vault"
+	vault "github.com/IMVgaur/Gophercises/Exercise_17/vault"
 	"github.com/spf13/cobra"
 )
 
@@ -15,10 +15,9 @@ var getCmd = &cobra.Command{
 		key := args[0]
 		value, err := v.Get(key)
 		if err != nil {
-			fmt.Printf("Error occured in Func Get : %v", err)
-			return
+			fmt.Printf("Error occured in Func Get : %v\n", err)
 		}
-		fmt.Printf("Key : %s 	Value : %s ", key, value)
+		fmt.Printf("Key : %s 	Value : %s \n", key, value)
 	},
 }
 

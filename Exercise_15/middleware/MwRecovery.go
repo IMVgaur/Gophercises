@@ -11,13 +11,13 @@ import (
 
 //RecoveryMid ...
 //Recovery function in case panic occures in the program while execution
+//return handler function
 func RecoveryMid(app http.Handler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if err := recover(); err != nil {
 				log.Println(err)
 				stack := debug.Stack()
-				log.Println(string(stack))
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, "<h1>%v</h1><pre>%s</pre>", err, ErrLinks(string(stack)))
 			}

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Gophercises/Exercise_17/vault"
+	vault "github.com/IMVgaur/Gophercises/Exercise_17/vault"
 	"github.com/spf13/cobra"
 )
 
@@ -15,8 +15,7 @@ var setCmd = &cobra.Command{
 		key, value := args[0], args[1]
 		err := v.Set(key, value)
 		if err != nil {
-			fmt.Printf("Error occured in Set : %v", err)
-			return
+			fmt.Printf("Error occured in Set : %v\n", err)
 		}
 		fmt.Println("Key and values has been Added successfully...!")
 	},

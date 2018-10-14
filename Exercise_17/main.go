@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Gophercises/Exercise_17/cmd"
+	cmd "github.com/IMVgaur/Gophercises/Exercise_17/cmd"
 )
 
 func main() {

@@ -23,7 +23,7 @@ func Handler() http.Handler {
 	return mux
 }
 
-//This sourceCodeNavigator function rendera the link to the program where error
+//This sourceCodeNavigator function renders the link to the program where error
 //was occured, with line number
 func sourceCodeNavigator(w http.ResponseWriter, r *http.Request) {
 	path := r.FormValue("path")

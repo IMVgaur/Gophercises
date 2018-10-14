@@ -30,7 +30,7 @@ func Init(dbPath string) (*bolt.DB, error) {
 	})
 }
 
-//AddTask is a metod to add task into the database
+//AddTask is a metod to add task to the task list
 //input : task string
 //return error
 func AddTask(task string) error {
@@ -43,7 +43,7 @@ func AddTask(task string) error {
 	})
 }
 
-//ListTasks is a method to list tasks in the database
+//GetAllTasks is a method to list tasks in the database
 //return task slice and error
 func GetAllTasks() ([]Task, error) {
 	var tasks []Task
@@ -82,7 +82,7 @@ func itob(v int) []byte {
 
 //helper function
 //input : Binary key
-//return : Integer key
+//return : Integer representation of binary key
 func btoi(b []byte) int {
 	return int(binary.BigEndian.Uint64(b))
 }

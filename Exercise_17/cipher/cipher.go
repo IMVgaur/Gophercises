@@ -37,9 +37,9 @@ func checkInitVector(n int, iv []byte, err error) error {
 //return reader which holds the decrypted data and error
 func DecryptReader(key string, r io.Reader) (*cipher.StreamReader, error) {
 	iv := make([]byte, aes.BlockSize)
-	n, err := r.Read(iv)
-	if n < len(iv) || err != nil {
-		return nil, errors.New("Encrypt : unable to read full IV")
+	_, err := r.Read(iv)
+	if err != nil {
+		return nil, err
 	}
 	stream, err := decryptStream(key, iv)
 	return &cipher.StreamReader{S: stream, R: r}, nil

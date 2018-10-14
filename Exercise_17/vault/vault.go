@@ -7,7 +7,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/Gophercises/Exercise_17/cipher"
+	cipher "github.com/IMVgaur/Gophercises/Exercise_17/cipher"
 )
 
 //Vault ...
@@ -37,10 +37,7 @@ func File(encodingKey, filePath string) *Vault {
 func (v *Vault) Set(key, value string) error {
 	v.mutex.Lock()
 	defer v.mutex.Unlock()
-	err := v.load()
-	if err != nil {
-		return err
-	}
+	v.keyValues = make(map[string]string)
 	v.keyValues[key] = value
 	return v.save()
 }
@@ -80,7 +77,7 @@ func (v *Vault) load() error {
 //func save represents logic of writting encrypted data on file
 //return error if any
 func (v *Vault) save() error {
-	f, err := os.OpenFile(v.filePath, os.O_RDWR|os.O_CREATE, 0755)
+	f, err := os.OpenFile(v.filePath, os.O_RDWR|os.O_CREATE, 0777)
 	if err != nil {
 		return err
 	}
@@ -100,6 +97,7 @@ func (v *Vault) readKeyValues(r io.Reader) error {
 	return decoder.Decode(&v.keyValues)
 }
 
+//writeKeyValues function takes writer and returns data in required format
 func (v *Vault) writeKeyValues(w io.Writer) error {
 	encoder := json.NewEncoder(w)
 	return encoder.Encode(&v.keyValues)

@@ -4,8 +4,8 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/IMVgaur/Gophercises/Exercise_7/cmd"
-	"github.com/IMVgaur/Gophercises/Exercise_7/db"
+	cmd "github.com/IMVgaur/Gophercises/Exercise_7/cmd"
+	db "github.com/IMVgaur/Gophercises/Exercise_7/db"
 	"github.com/mitchellh/go-homedir"
 )
 
@@ -14,6 +14,7 @@ func main() {
 }
 
 //Initializer ...
+//Intialize bolt db
 func Initializer() {
 	home, _ := homedir.Dir()
 	dbPath := filepath.Join(home, "tasks.db")
